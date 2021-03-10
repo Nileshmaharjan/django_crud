@@ -1,5 +1,5 @@
 """
-ASGI config for bzkRestApisMySQL project.
+ASGI config for MySQL project.
 
 It exposes the ASGI callable as a module-level variable named ``application``.
 
@@ -11,6 +11,6 @@ import os
 
 from django.core.asgi import get_asgi_application
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'bzkRestApisMySQL.settings')
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'MySQL.settings')
 
 application = get_asgi_application()

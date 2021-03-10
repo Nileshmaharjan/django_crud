@@ -1,12 +1,23 @@
 from rest_framework import serializers 
-from tutorials.models import Tutorial
+from tutorials.models import Monuments
+from tutorials.models import LocalFood
  
- 
-class TutorialSerializer(serializers.ModelSerializer):
- 
+
+        
+class MonumentSerializer(serializers.ModelSerializer):
+        
     class Meta:
-        model = Tutorial
+        model = Monuments
         fields = ('id',
                   'title',
                   'description',
-                  'published')
+                  'history')
+        
+class LocalFoodSerializer(serializers.ModelSerializer):
+        
+    class Meta:
+        model = LocalFood
+        fields = ('id',
+                  'title',
+                  'description',
+                  'history')

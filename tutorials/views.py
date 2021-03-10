@@ -4,66 +4,113 @@ from django.http.response import JsonResponse
 from rest_framework.parsers import JSONParser 
 from rest_framework import status
  
-from tutorials.models import Tutorial
-from tutorials.serializers import TutorialSerializer
+
+from tutorials.models import Monuments
+from tutorials.serializers import MonumentSerializer
+
+from tutorials.models import LocalFood
+from tutorials.serializers import LocalFoodSerializer
+
 from rest_framework.decorators import api_view
 
+    
 
 @api_view(['GET', 'POST', 'DELETE'])
-def tutorial_list(request):
+def monuments_list(request):
     if request.method == 'GET':
-        tutorials = Tutorial.objects.all()
+        monuments = Monuments.objects.all()
         
         title = request.GET.get('title', None)
         if title is not None:
-            tutorials = tutorials.filter(title__icontains=title)
+            monuments = monuments.filter(title__icontains=title)
         
-        tutorials_serializer = TutorialSerializer(tutorials, many=True)
-        return JsonResponse(tutorials_serializer.data, safe=False)
+        monuments_serializer = MonumentSerializer(monuments, many=True)
+        return JsonResponse(monuments_serializer.data, safe=False)
         # 'safe=False' for objects serialization
  
     elif request.method == 'POST':
-        tutorial_data = JSONParser().parse(request)
-        tutorial_serializer = TutorialSerializer(data=tutorial_data)
-        if tutorial_serializer.is_valid():
-            tutorial_serializer.save()
-            return JsonResponse(tutorial_serializer.data, status=status.HTTP_201_CREATED) 
-        return JsonResponse(tutorial_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        monument_data = JSONParser().parse(request)
+        monuments_serializer = MonumentSerializer(data=monument_data)
+        if monuments_serializer.is_valid():
+            monuments_serializer.save()
+            return JsonResponse(monuments_serializer.data, status=status.HTTP_201_CREATED) 
+        return JsonResponse(monuments_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
     elif request.method == 'DELETE':
-        count = Tutorial.objects.all().delete()
-        return JsonResponse({'message': '{} Tutorials were deleted successfully!'.format(count[0])}, status=status.HTTP_204_NO_CONTENT)
- 
- 
+        count = Monuments.objects.all().delete()
+        return JsonResponse({'message': '{} Monuments were deleted successfully!'.format(count[0])}, status=status.HTTP_204_NO_CONTENT)
+    
 @api_view(['GET', 'PUT', 'DELETE'])
-def tutorial_detail(request, pk):
+def monuments_detail(request, pk):
     try: 
-        tutorial = Tutorial.objects.get(pk=pk) 
-    except Tutorial.DoesNotExist: 
-        return JsonResponse({'message': 'The tutorial does not exist'}, status=status.HTTP_404_NOT_FOUND) 
+        monuments = Monuments.objects.get(pk=pk) 
+    except Monuments.DoesNotExist: 
+        return JsonResponse({'message': 'The monuments does not exist'}, status=status.HTTP_404_NOT_FOUND) 
  
     if request.method == 'GET': 
-        tutorial_serializer = TutorialSerializer(tutorial) 
-        return JsonResponse(tutorial_serializer.data) 
+        monuments_serializer = MonumentSerializer(monuments) 
+        return JsonResponse(monuments_serializer.data) 
  
     elif request.method == 'PUT': 
         tutorial_data = JSONParser().parse(request) 
-        tutorial_serializer = TutorialSerializer(tutorial, data=tutorial_data) 
-        if tutorial_serializer.is_valid(): 
-            tutorial_serializer.save() 
-            return JsonResponse(tutorial_serializer.data) 
-        return JsonResponse(tutorial_serializer.errors, status=status.HTTP_400_BAD_REQUEST) 
+        monuments_serializer = MonumentSerializer(monuments, data=tutorial_data) 
+        if monuments_serializer.is_valid(): 
+            monuments_serializer.save() 
+            return JsonResponse(monuments_serializer.data) 
+        return JsonResponse(monuments_serializer.errors, status=status.HTTP_400_BAD_REQUEST) 
  
     elif request.method == 'DELETE': 
-        tutorial.delete() 
+        monuments.delete() 
         return JsonResponse({'message': 'Tutorial was deleted successfully!'}, status=status.HTTP_204_NO_CONTENT)
     
+
+@api_view(['GET', 'POST', 'DELETE'])
+def localFoodList(request):
+    if request.method == 'GET':
+        localFood = LocalFood.objects.all()
         
-@api_view(['GET'])
-def tutorial_list_published(request):
-    tutorials = Tutorial.objects.filter(published=True)
+        title = request.GET.get('title', None)
+        if title is not None:
+            localFood = localFood.filter(title__icontains=title)
         
+        localFood_serializer = LocalFoodSerializer(localFood, many=True)
+        return JsonResponse(localFood_serializer.data, safe=False)
+        # 'safe=False' for objects serialization
+ 
+    elif request.method == 'POST':
+        localFood_data = JSONParser().parse(request)
+        localFood_serializer = LocalFoodSerializer(data=localFood_data)
+        if localFood_serializer.is_valid():
+            localFood_serializer.save()
+            return JsonResponse(localFood_serializer.data, status=status.HTTP_201_CREATED) 
+        return JsonResponse(localFood_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+    elif request.method == 'DELETE':
+        count = LocalFood.objects.all().delete()
+        return JsonResponse({'message': '{} LocalFood were deleted successfully!'.format(count[0])}, status=status.HTTP_204_NO_CONTENT)
+    
+@api_view(['GET', 'PUT', 'DELETE'])
+def localFoodDetail(request, pk):
+    try: 
+        monuments = LocalFood.objects.get(pk=pk) 
+    except Monuments.DoesNotExist: 
+        return JsonResponse({'message': 'The monuments does not exist'}, status=status.HTTP_404_NOT_FOUND) 
+ 
     if request.method == 'GET': 
-        tutorials_serializer = TutorialSerializer(tutorials, many=True)
-        return JsonResponse(tutorials_serializer.data, safe=False)
+        localFood_serializer = LocalFoodSerializer(monuments) 
+        return JsonResponse(localFood_serializer.data) 
+ 
+    elif request.method == 'PUT': 
+        tutorial_data = JSONParser().parse(request) 
+        localFood_serializer = LocalFoodSerializer(monuments, data=tutorial_data) 
+        if localFood_serializer.is_valid(): 
+            localFood_serializer.save() 
+            return JsonResponse(localFood_serializer.data) 
+        return JsonResponse(localFood_serializer.errors, status=status.HTTP_400_BAD_REQUEST) 
+ 
+    elif request.method == 'DELETE': 
+        monuments.delete() 
+        return JsonResponse({'message': 'Local Food was deleted successfully!'}, status=status.HTTP_204_NO_CONTENT)
+    
+    
     
